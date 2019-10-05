@@ -1,17 +1,22 @@
 const express = require('express')
 const app = express();
+const connectDB = require('./config/db')
 
+//import routs
 const contactsRoute = require('./routes/contacts')
 const authRoute = require('./routes/auth')
 const usersRoute = require('./routes/users')
 
-console.log()
+//setup middleware functions
+app.use(express.json({extended: false}))
 
-const apiPath = '/api/'
+//connect to database
+connectDB()
 
-app.use(`${apiPath}users`, usersRoute)
-app.use(`${apiPath}auth`, authRoute)
-app.use(`${apiPath}contact`, contactsRoute)
+//routes
+app.use('/api/users', usersRoute)
+app.use('/api/auth', authRoute)
+app.use('/api/contact', contactsRoute)
 
 const PORT = process.env.PORT || 5000
 
