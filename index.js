@@ -5,7 +5,7 @@ const connectDB = require('./config/db')
 //import routs
 const contactsRoute = require('./routes/contacts')
 const authRoute = require('./routes/auth')
-const usersRoute = require('./routes/users')
+const userRoute = require('./routes/user')
 
 //setup middleware functions
 app.use(express.json({extended: false}))
@@ -14,7 +14,7 @@ app.use(express.json({extended: false}))
 connectDB()
 
 //routes
-app.use('/api/users', usersRoute)
+app.use('/api/user', userRoute)
 app.use('/api/auth', authRoute)
 app.use('/api/contact', contactsRoute)
 
