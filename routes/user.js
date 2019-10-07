@@ -5,6 +5,7 @@ const {
 } = require('express-validator');
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const auth = require('../middleware/auth')
 const User = require('../Models/User')
 const secret = require('../config/default.json').secret
 
@@ -12,17 +13,28 @@ const secret = require('../config/default.json').secret
 const router = express.Router()
 
 /**
- * @route GET /api/users
- * @desc Get all users
+ * @route GET /api/user
+ * @desc Get user data
  * @access private
  */
-router.get('/', (req, res) => {
-    res.send("Get users")
+router.get('/', auth, async (req, res) => {
+    const userData = await User.findById(req.userId)
+
+    if (!userData) {
+        return res.status(400).send({
+            err: 'Please log in again.'
+        })
+    }
+
+    return res.status(200).send({
+        name: userData.name,
+        email: userData.email
+    })
 })
 
 
 /**
- * @route POST /api/users
+ * @route POST /api/user
  * @desc Create new user
  * @returns auth token
  * @access public
@@ -43,7 +55,11 @@ router.post('/',
             return res.status(400).send(errors.array())
         }
 
-        const { email, name, password } = req.body
+        const {
+            email,
+            name,
+            password
+        } = req.body
 
         const foundUser = await User.findOne({
             email
@@ -67,11 +83,15 @@ router.post('/',
 
         const savedUser = await user.save()
 
-        const token = jwt.sign({id: savedUser._id}, secret, {
+        const token = jwt.sign({
+            id: savedUser._id
+        }, secret, {
             expiresIn: '1h'
         })
 
-        return res.status(200).send({token})
+        return res.status(200).send({
+            token
+        })
     })
 
 module.exports = router
