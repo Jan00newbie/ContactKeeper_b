@@ -1,11 +1,12 @@
 const express = require('express')
+const { check } = require('express-validator')
+
 const auth = require('../middleware/auth')
-const {
-    check,
-    validationResult
-} = require('express-validator')
+const validate = require('../middleware/validate')
+
 const Contact = require('../Models/Contact')
 const User = require('../Models/User')
+
 const router = express.Router()
 
 /**
@@ -27,14 +28,9 @@ router.post('/',[
     auth,
     check('name', 'Please privide name of contact.').not().isEmpty(),
     check('email', 'Please privide valid email.').isEmail().optional(),
-    check('phone', 'Please privide valid phone.').isMobilePhone().optional()
+    check('phone', 'Please privide valid phone.').isMobilePhone().optional(),
+    validate
     ], async (req, res) => {
-        
-        const errors = validationResult(req)
-
-        if(!errors.isEmpty()){
-            return res.status(400).send(errors.array())
-        }
         
         const userId = req.userId
         const foundUser = await User.findById(userId)

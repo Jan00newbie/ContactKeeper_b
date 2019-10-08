@@ -1,8 +1,12 @@
 const express = require('express')
-const { check, validationResult } = require('express-validator')
 const bcrypt = require('bcryptjs')
 const jwt = require('jsonwebtoken')
+const { check } = require('express-validator')
+
+const validate = require('../middleware/validate')
+
 const User = require('../Models/User')
+
 const secret = require('../config/default.json').secret
 
 const router = express.Router()
@@ -17,12 +21,8 @@ const router = express.Router()
 router.post('/',[
     check('email', 'Please include a valid email').isEmail(),
     check('password', 'Please enter a password with 6 or more characters').not().isEmpty(),
+    validate
 ], async (req, res) => {
-    const errors = validationResult(req)
-    
-    if(!errors.isEmpty()){
-        return res.status(400).send(errors.array())
-    }
 
     const { email, password } = req.body
 
