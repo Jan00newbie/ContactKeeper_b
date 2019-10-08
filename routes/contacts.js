@@ -25,11 +25,11 @@ router.get('/', auth, (req, res) => {
  * @access private
  */
 router.post('/',[
-    auth,
-    check('name', 'Please privide name of contact.').not().isEmpty(),
-    check('email', 'Please privide valid email.').isEmail().optional(),
-    check('phone', 'Please privide valid phone.').isMobilePhone().optional(),
-    validate
+        auth,
+        check('name', 'Please privide name of contact.').not().isEmpty(),
+        check('email', 'Please privide valid email.').isEmail().optional(),
+        check('phone', 'Please privide valid phone.').isMobilePhone().optional(),
+        validate
     ], async (req, res) => {
         
         const userId = req.userId
@@ -67,12 +67,14 @@ router.put('/', auth, (req, res) => {
 })
 
 /**
- * @route POST /api/contacts
+ * @route DELETE /api/contacts
  * @desc Update contact
  * @access private
  */
 router.delete('/', auth, (req, res) => {
-    res.send("Update contact")
+
+    return await Contact.findOneAndRemove({id: req.body.id, userId: req.userId })
+
 })
 
 module.exports = router
