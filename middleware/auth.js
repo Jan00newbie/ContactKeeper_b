@@ -3,7 +3,6 @@ const secret = require('../config/default.json').secret
 
 module.exports = (req, res, next) =>{
     const bearerToken = req.headers.authorization
-
     if(bearerToken){
         try {
             const authToken = bearerToken.split(' ')[1]
