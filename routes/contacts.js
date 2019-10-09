@@ -50,7 +50,7 @@ router.post('/',[
 
         try {
             const result = await contact.save()
-            res.json(result)
+            res.status(200).json(result)
         } catch(err) {
             return res.status(404).send({err: 'Write error.'})
         }
@@ -71,10 +71,15 @@ router.put('/', auth, (req, res) => {
  * @desc Update contact
  * @access private
  */
-router.delete('/', auth, (req, res) => {
+router.delete('/', auth, async (req, res) => {
 
-    return await Contact.findOneAndRemove({id: req.body.id, userId: req.userId })
+    const result = await Contact.findOneAndRemove({_id: req.body.id, user: req.userId })
 
+    if(!result){
+        res.status(404).send({err: "Contact not found."})
+    }
+
+    res.status(200).send({msg: "Sucessfully removed record."})
 })
 
 module.exports = router
