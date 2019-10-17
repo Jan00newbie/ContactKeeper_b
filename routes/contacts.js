@@ -1,5 +1,7 @@
 const express = require('express')
-const { check } = require('express-validator')
+const {
+    check
+} = require('express-validator')
 
 const auth = require('../middleware/auth')
 const validate = require('../middleware/validate')
@@ -15,8 +17,27 @@ const router = express.Router()
  * @returns All users's contacts
  * @access private
  */
-router.get('/', auth, (req, res) => {
-    
+router.get('/', auth, async (req, res) => {
+    const userId = req.userId
+
+    const contacts = await Contact.find({
+        user: userId
+    })
+
+    if (!contacts) {
+        res.status(404).send({
+            err: "No data found."
+        })
+    }
+    const contactResult = contacts.map(({name, _id, email, phone}) => (
+        {
+            name,
+            id: _id,
+            email,
+            phone
+        }
+        ))
+    res.status(200).send(contactResult)
 })
 
 /**
@@ -24,75 +45,84 @@ router.get('/', auth, (req, res) => {
  * @desc Add contact
  * @access private
  */
-router.post('/',[
-        auth,
-        check('name', 'Please privide name of contact.').not().isEmpty(),
-        check('email', 'Please privide valid email.').isEmail().optional(),
-        check('phone', 'Please privide valid phone.').isMobilePhone().optional(),
-        validate
-    ], async (req, res) => {
-        
-        const userId = req.userId
-        const foundUser = await User.findById(userId)
-        
-        if(!foundUser){
-            return res.status(404).send({err: 'User id in token is not apropierate.'})
-        }
+router.post('/', [
+    auth,
+    check('name', 'Please privide name of contact.').not().isEmpty(),
+    check('email', 'Please privide valid email.').isEmail().optional(),
+    check('phone', 'Please privide valid phone.').isMobilePhone().optional(),
+    validate
+], async (req, res) => {
 
-        const { name, email, phone } = req.body
+    const userId = req.userId
+    const foundUser = await User.findById(userId)
 
-        const contact = new Contact({
-            user: userId,
-            name,
-            email,
-            phone
+    if (!foundUser) {
+        return res.status(404).send({
+            err: 'User id in token is not apropierate.'
         })
-
-        try {
-            const result = await contact.save()
-            res.status(200).json(result)
-        } catch(err) {
-            return res.status(404).send({err: 'Write error.'})
-        }
     }
-)
+
+    const {
+        name,
+        email,
+        phone
+    } = req.body
+
+    const contact = new Contact({
+        user: userId,
+        name,
+        email,
+        phone
+    })
+
+    try {
+        const result = await contact.save()
+        res.status(200).json(result)
+    } catch (err) {
+        return res.status(404).send({
+            err: 'Write error.'
+        })
+    }
+})
 
 /**
  * @route PUT /api/contacts
  * @desc Update contact
  * @access private
  */
-router.put('/', [
-        auth,
-        check('name', 'Please privide name of contact.').optional(),
-        check('email', 'Please privide valid email.').isEmail().optional(),
-        check('phone', 'Please privide valid phone.').isMobilePhone().optional(),
-        validate
-    ], async (req, res) => {
- 
-        const update = {
-            name: req.body.name,
-            email: req.body.email, 
-            phone:req.body.phone
-        }
+router.put('/:contact', [
+    auth,
+    check('name', 'Please privide name of contact.').optional(),
+    check('email', 'Please privide valid email.').isEmail().optional(),
+    check('phone', 'Please privide valid phone.').isMobilePhone().optional(),
+    validate
+], async (req, res) => {
 
-        try {
-            const updatedContact = await Contact.findOneAndUpdate({ _id: req.body.id, user: req.userId }, update, {
-                new: true,
-                upsert: true
-            })
 
-            return res.status(200).send(updatedContact)
-            
-        } catch {
-            return res.status(404).send({err: "Contact not found"})
-            
-        }
-
-        
-
+    console.log(res.params)
+    const update = {
+        name: req.body.name,
+        email: req.body.email,
+        phone: req.body.phone
     }
-)
+
+    try {
+        const updatedContact = await Contact.findOneAndUpdate({
+            _id: req.params.contact,
+            user: req.userId
+        }, update, {
+            new: true,
+            upsert: true
+        })
+
+        return res.status(200).send(updatedContact)
+
+    } catch {
+        return res.status(404).send({
+            err: "Contact not found"
+        })
+    }
+})
 
 /**
  * @route DELETE /api/contacts
@@ -101,13 +131,22 @@ router.put('/', [
  */
 router.delete('/', auth, async (req, res) => {
 
-    const result = await Contact.findOneAndRemove({_id: req.body.id, user: req.userId })
+    const result = await Contact.findOneAndRemove({
+        _id: req.body.id,
+        user: req.userId
+    })
 
-    if(!result){
-        res.status(404).send({err: "Contact not found."})
+    if (!result) {
+        res.status(404).send({
+            err: "Contact not found."
+        })
     }
 
-    res.status(200).send({msg: "Sucessfully removed record."})
+    res.status(200).send({
+        msg: "Sucessfully removed record."
+    })
 })
+
+
 
 module.exports = router
