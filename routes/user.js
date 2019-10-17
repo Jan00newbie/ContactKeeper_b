@@ -19,18 +19,25 @@ const router = express.Router()
  * @access private
  */
 router.get('/', auth, async (req, res) => {
-    const userData = await User.findById(req.userId)
+    
+    try {
+        const userData = await User.findById(req.userId)
 
-    if (!userData) {
-        return res.status(400).send({
-            err: 'Please log in again.'
+        if (!userData) {
+            return res.status(400).send({
+                err: 'Please log in again.'
+            })
+        }
+
+
+        return res.status(200).send({
+            name: userData.name,
+            email: userData.email
         })
-    }
 
-    return res.status(200).send({
-        name: userData.name,
-        email: userData.email
-    })
+    } catch (error) {
+        console.error(error);
+    }
 })
 
 
@@ -51,33 +58,37 @@ router.post('/',
 
         const { email, name, password } = req.body
 
-        const foundUser = await User.findOne({ email })
+        try {
+            const foundUser = await User.findOne({ email })
+            if (foundUser) {
+                return res.status(400).send({
+                    err: 'User already exist!'
+                })
+            }
 
-        if (foundUser) {
-            return res.status(400).send({
-                err: 'User already exist!'
+            const salt = await bcrypt.genSalt()
+
+            const hash = await bcrypt.hash(password, salt)
+
+            const user = new User({
+                name,
+                password: hash,
+                email
             })
+
+            const savedUser = await user.save()
+
+            const token = jwt.sign({
+                id: savedUser._id
+            }, secret, {
+                expiresIn: '1h'
+            })
+
+            return res.status(200).send({ token })
+            
+        } catch (error) {
+            console.error(error)
         }
-
-        const salt = await bcrypt.genSalt()
-
-        const hash = await bcrypt.hash(password, salt)
-
-        const user = new User({
-            name,
-            password: hash,
-            email
-        })
-
-        const savedUser = await user.save()
-
-        const token = jwt.sign({
-            id: savedUser._id
-        }, secret, {
-            expiresIn: '1h'
-        })
-
-        return res.status(200).send({ token })
     }
 )
 

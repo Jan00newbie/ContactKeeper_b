@@ -40,6 +40,39 @@ router.get('/', auth, async (req, res) => {
     res.status(200).send(contactResult)
 })
 
+
+/**
+ * @route GET /api/contacts
+ * @desc Get contact
+ * @returns Users contact with given id
+ * @access private
+ */
+router.get('/:id', auth, async (req, res) => {
+    const userId = req.userId
+
+    try {
+
+        const contact = await Contact.findOne({ user: userId, _id: req.params.id})
+        
+        if (!contact) {
+            return res.status(404).send({
+                err: "No data found."
+            })
+        }
+
+        const { name, _id, email, phone } = contact
+    
+        const contactResult = { name, _id, email, phone }
+
+        res.status(200).send(contactResult)
+
+    } catch (error) {
+        return res.status(404).send({
+            err: "No data found."
+        })
+    }
+})
+
 /**
  * @route POST /api/contacts
  * @desc Add contact
@@ -62,11 +95,7 @@ router.post('/', [
         })
     }
 
-    const {
-        name,
-        email,
-        phone
-    } = req.body
+    const { name, email, phone } = req.body
 
     const contact = new Contact({
         user: userId,
@@ -77,7 +106,7 @@ router.post('/', [
 
     try {
         const result = await contact.save()
-        res.status(200).json(result)
+        return res.status(200).json(result)
     } catch (err) {
         return res.status(404).send({
             err: 'Write error.'
@@ -90,14 +119,13 @@ router.post('/', [
  * @desc Update contact
  * @access private
  */
-router.put('/:contact', [
+router.put('/:id', [
     auth,
     check('name', 'Please privide name of contact.').optional(),
     check('email', 'Please privide valid email.').isEmail().optional(),
     check('phone', 'Please privide valid phone.').isMobilePhone().optional(),
     validate
 ], async (req, res) => {
-
 
     console.log(res.params)
     const update = {
@@ -108,7 +136,7 @@ router.put('/:contact', [
 
     try {
         const updatedContact = await Contact.findOneAndUpdate({
-            _id: req.params.contact,
+            _id: req.params.id,
             user: req.userId
         }, update, {
             new: true,
