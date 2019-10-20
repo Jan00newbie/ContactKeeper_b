@@ -1,0 +1,28 @@
+import React from 'react';
+import { Link } from 'react-router-dom';
+
+import Navbar from '../Navbar/Navbar'
+import logo from '../../../assets/logo.svg'
+
+const style = {
+    display: 'flex',
+    padding: '2em',
+    background: 'lightblue',
+    justifyContent: 'space-between',
+    alignItems: 'center'
+};  
+
+
+const Header = () => {
+    return (
+        <header style={style}>
+            <Link to="/">
+                <img id="logo" src={logo} alt="logo"/>Contact Keeper
+            </Link>
+            
+            <Navbar />
+        </header>
+    )
+}
+
+export default Header
