@@ -13,30 +13,36 @@ import Home from './components/Pages/Home';
 import About from './components/Pages/About';
 import Contacts from './components/Pages/Contacts';
 
+import ContactProvider from './context/contact/ContactState'
+
 const App = () => {
 
   return (
-    <Router>
-      <Fragment>
+    <ContactProvider>
+      <Router>
+        <Fragment>
 
-        <Header />
+          <Header />
+          
+          <div className="container">
+            <Switch>
+              <Route exact path='/'>
+                <Home/>
+              </Route>
 
-        <Switch>
-          <Route exact path='/'>
-            <Home/>
-          </Route>
+              <Route exact path='/about'>
+                <About/>
+              </Route>
 
-          <Route exact path='/about'>
-            <About/>
-          </Route>
+              <Route exact path='/contacts'>
+                <Contacts/>
+              </Route>
+            </Switch>
+          </div>
 
-          <Route exact path='/contacts'>
-            <Contacts/>
-          </Route>
-        </Switch>
-
-      </Fragment>
-    </Router>
+        </Fragment>
+      </Router>
+    </ContactProvider>
   );
 };
 

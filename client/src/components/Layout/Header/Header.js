@@ -9,7 +9,8 @@ const style = {
     padding: '2em',
     background: 'lightblue',
     justifyContent: 'space-between',
-    alignItems: 'center'
+    alignItems: 'center',
+    boxShadow: "0 2px 4px 0 grey",
 };  
 
 
