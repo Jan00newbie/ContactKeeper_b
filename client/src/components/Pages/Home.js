@@ -1,6 +1,8 @@
 import React, { Fragment } from 'react';
 
-const Home = () => {
+const Home = props => {
+
+    
     return (
        <Fragment>
            Home

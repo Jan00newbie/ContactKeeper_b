@@ -1,5 +1,4 @@
-import React, {useState, useContext} from 'react'
-import ContactContext from '../../context/contact/contactContext'
+import React, {useState} from 'react'
 
 const style = {
     display: 'flex',
@@ -7,7 +6,7 @@ const style = {
 }
 
 const ContactForm = ({id, name='', email='', phone='', submitHandler}) => {
-    
+
     const [userInput, setUserInput] = useState({
         name,
         email,
@@ -26,6 +25,15 @@ const ContactForm = ({id, name='', email='', phone='', submitHandler}) => {
         });
     };
 
+    const handleRestoreToDefault = e => {
+        e.preventDefault();
+        setUserInput({
+            name,
+            email,
+            phone
+        });
+    }
+
     const handleSubmit = e => {
         e.preventDefault();
 
@@ -38,13 +46,13 @@ const ContactForm = ({id, name='', email='', phone='', submitHandler}) => {
 
     return (
         <form style={style}>
-            <label htmlFor="name">Name</label><input name='name' onChange={handleChange} value={userInput.name} type="text"/>
-            <label htmlFor="email">Email</label><input name='email' onChange={handleChange} value={userInput.email} type="text"/>
-            <label htmlFor="name">Phone</label><input name='phone' onChange={handleChange} value={userInput.phone} type="text"/>
-            <button onClick={handleSubmit}>{id ? 'Change': 'Add'}</button>
+            <label htmlFor="name">Name</label><input name='name' onChange={handleChange} value={userInput.name} placeholder="Enter name..." type="text"/>
+            <label htmlFor="email">Email</label><input name='email' onChange={handleChange} value={userInput.email} placeholder="Enter email..." type="text"/>
+            <label htmlFor="name">Phone</label><input name='phone' onChange={handleChange} value={userInput.phone} placeholder="Enter phone..." type="text"/>
+            <button className="btn btn-pos" onClick={handleSubmit}>{id ? 'Change': 'Add'}</button>
+            <button className="btn btn-neu" onClick={handleRestoreToDefault}>{id ? 'Restore': 'Clear'}</button>
         </form>
     )
-
 }
 
 export default ContactForm

@@ -5,12 +5,11 @@ import ContactFilter from '../../components/Contacts/ContactFilter'
 
 const FlitringList = ({contacts}) => {
 
-    const [filter, setFilter] = useState('')
+    const [filter, setFilter] = useState('');
 
-    const filtredContacts = contacts.filter(contact => contact.name.toLowerCase().includes(filter.toLowerCase()))
+    const filtredContacts = contacts.filter(contact => contact.name.toLowerCase().includes(filter.toLowerCase()));
 
     const filterHandler = filter => {
-        console.log(filter)
         setFilter(filter)
     }
 

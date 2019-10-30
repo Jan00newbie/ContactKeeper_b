@@ -36,7 +36,43 @@ h1{
     padding: 1em 0;
 }
 
+form > input{
+    margin-bottom: 1em;
+}
 
+.btn {
+    padding: 0.5em;
+    background: none;
+    border: 1px solid;
+    box-shadow: rgba(0, 0, 0, .16) 0px 1px 4px 0px;
+    border-radius: 1em;
+    cursor: pointer;
+    background-color: white;
+    margin: 0.5em;
+}
+
+.btn-pos {
+    border-color: #009688;
+    color: #009688;
+}
+
+.btn-neg {
+    border-color: #F44336;
+    color: #F44336;
+}
+
+.btn-neu {
+    border-color: #FFC107;
+    color: #FFC107;
+}
+
+input[type="text"]{
+    border: 0;
+    border-bottom: 1px solid grey;
+    outline: 0;
+    padding: .7em 0 .3em 0;
+    color: grey;
+}
 @media screen and (min-width: 40rem){
     .container{
         width: 35rem;

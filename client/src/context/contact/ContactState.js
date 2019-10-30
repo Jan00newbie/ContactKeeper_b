@@ -7,8 +7,7 @@ import contactReducer from './contactReducer';
 import {
     ADD_CONTACT,
     DELETE_CONTACT,
-    SET_CONTACT,
-    UPDATE_CONTACT,
+    UPDATE_CONTACT
 } from '../types';
 
 
@@ -80,15 +79,15 @@ const ContactState = props => {
     const [state, dispath] = useReducer(contactReducer, initialState);
     
     const addContactHandler = contact => {
-        dispath({type: ADD_CONTACT, contact});
+        dispath({type: ADD_CONTACT, payload: contact});
     }
 
     const deleteContactHandler = contactId => {
-        dispath({type: DELETE_CONTACT, contactId});
+        dispath({type: DELETE_CONTACT, payload:contactId});
     }
 
     const updateContactHandler = contact => {
-        dispath({type: UPDATE_CONTACT, contact});
+        dispath({type: UPDATE_CONTACT, payload: contact});
     }
 
     return (

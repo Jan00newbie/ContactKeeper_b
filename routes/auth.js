@@ -13,7 +13,7 @@ const router = express.Router()
 
 
 /**
- * @route GET /api/login
+ * @route GET /api/auth
  * @desc Endpoint for user logging
  * @returns auth token
  * @access private
@@ -31,7 +31,7 @@ router.post('/',[
     const wrongDataEnteredMessage = 'The password or email that have been entered is incorrect.'
 
     if(!foundUser){
-        return res.status(400).send({err: wrongDataEnteredMessage})
+        return res.status(401).send({err: wrongDataEnteredMessage})
     }
     const isCorrectPassword = await bcrypt.compare(password, foundUser.password);
     
