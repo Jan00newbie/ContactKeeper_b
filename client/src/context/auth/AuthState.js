@@ -22,6 +22,7 @@ const AuthState = props => {
         })
         .then(res => res.json())
         .then(data => {
+            console.log(data);
             const action = (data.token) 
                 ? { type: LOGIN_SUCCESS, payload: data.token }
                 : { type: LOGIN_FAILED };
@@ -40,6 +41,8 @@ const AuthState = props => {
         })
         .then(res => res.json())
         .then(data => {
+            console.log(data);
+            
             const action = (data.token) 
                 ? { type: REGISTER_SUCCESS, payload: data.token }
                 : { type: REGISTER_FAILED };

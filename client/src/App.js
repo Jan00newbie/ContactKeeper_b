@@ -17,7 +17,7 @@ import SignForm from './components/Pages/SignForm';
 
 const App = () => {
   const {isAuthenticated, getUser, user, login, register} = useContext(authContext)
-
+  
   useEffect(() => {
     if(isAuthenticated && !user){
       getUser();
@@ -45,11 +45,11 @@ const App = () => {
             </Route>
 
             <Route exact path='/login'>
-              <SignForm submitHandler={login}/>
+              <SignForm submitHandler={login} inputsBean={['email', 'password']}/>
             </Route>
 
             <Route exact path='/register'>
-              <SignForm submitHandler={register}/>
+              <SignForm submitHandler={register} inputsBean={['name' ,'email', 'password']}/>
             </Route>
           </Switch>
         </div>
