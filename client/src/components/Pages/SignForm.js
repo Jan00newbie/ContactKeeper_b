@@ -7,14 +7,13 @@ const style = {
     flexDirection: 'column'
 }
 
-const Login = () => {
-    const { login, isAuthenticated } = useContext(authContext)
+const SignForm = ({submitAction}) => {
+    const { isAuthenticated } = useContext(authContext)
     const history = useHistory();
 
     const [input, setInput] = useState({email: '', password:''})
     
     useEffect(() => {
-
         if(isAuthenticated){
             history.push('/contacts')
         }
@@ -30,7 +29,7 @@ const Login = () => {
 
     const onSubmit = e => {
         e.preventDefault()
-        login({
+        submitAction({
             email: input.email,
             password: input.password
         })
@@ -38,8 +37,7 @@ const Login = () => {
 
     return (
         <form style={style}>
-            <h1>Get logged in!</h1>
-            
+            <h1>Get sign in!</h1>
                 <label htmlFor="email">Email</label>
                 <input name="email" onChange={onChange} type="text" value={input.email}/>
                 <label htmlFor="password">Password</label>
@@ -49,4 +47,4 @@ const Login = () => {
     )
 }
 
-export default Login
+export default SignForm

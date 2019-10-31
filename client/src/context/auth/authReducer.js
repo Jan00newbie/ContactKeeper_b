@@ -3,7 +3,8 @@ import {
     LOGIN_SUCCESS,
     REGISTER_FAILED,
     LOGIN_FAILED,
-    GET_USER
+    GET_USER_SUCCESS,
+    GET_USER_FAILED
 } from '../types';
 
 export default (state, change) => {
@@ -24,8 +25,11 @@ export default (state, change) => {
                 isAuthenticated: false
             }
         
-        case GET_USER:
+        case GET_USER_SUCCESS:
+            return state;
             
+        case GET_USER_SUCCESS:
+            return state;
 
         default:
             break;
