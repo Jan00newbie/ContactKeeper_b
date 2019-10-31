@@ -1,4 +1,4 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useContext, useEffect } from 'react';
 import {
   BrowserRouter as Router,
   Switch,
@@ -6,6 +6,8 @@ import {
 } from 'react-router-dom';
 
 import './App.css';
+
+import authContext from './context/auth/authContext'
 
 import Header from './components/Layout/Header/Header';
 
@@ -18,7 +20,13 @@ import ContactProvider from './context/contact/ContactState';
 import AuthProvider from './context/auth/AuthState'
 
 const App = () => {
+  const {isAuthenticated, getUser, user} = useContext(authContext)
 
+  useEffect(() => {
+    if(isAuthenticated && !user){
+      getUser();
+    }
+  }, [isAuthenticated, user])
   return (
     <AuthProvider>
       <ContactProvider>

@@ -22,14 +22,10 @@ const AuthState = props => {
         })
         .then(res => res.json())
         .then(data => {
-            if (data.token) {
-                dispath({
-                    type: LOGIN_SUCCESS,
-                    payload: data.token
-                })
-            }else{
-                dispath({type: LOGIN_FAILED});
-            }
+            const action = (data.token) 
+                ? { type: LOGIN_SUCCESS, payload: data.token }
+                : { type: LOGIN_FAILED };
+            dispath(action);
         })
         .catch(err => console.log(err))
     }
