@@ -26,7 +26,10 @@ export default (state, change) => {
             }
         
         case GET_USER_SUCCESS:
-            return state;
+            return {
+                ...state,
+                user:change.user
+            };
             
         case GET_USER_SUCCESS:
             return state;

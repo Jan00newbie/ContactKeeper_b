@@ -52,7 +52,11 @@ const AuthState = props => {
     }
 
     const getUser = () => {
-        fetch('/user')
+        fetch('/user', {
+            headers:{
+                "Authorization": `Brearer ${localStorage.getItem('token')}`
+            }
+        })
         .then(res => res.json())
         .then(data => {
             const action = (data) 
@@ -66,8 +70,9 @@ const AuthState = props => {
         <AuthContext.Provider value={{
             login: loginHandler,
             register: registerHandler,
+            getUser,
             isAuthenticated: state.isAuthenticated,
-            getUser
+            user:state.user,
         }} >
             {props.children}
         </AuthContext.Provider>
