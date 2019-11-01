@@ -1,8 +1,8 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import { Link } from 'react-router-dom';
-
-import Navbar from '../Navbar/Navbar'
 import logo from '../../../assets/logo.svg'
+
+import authContext from '../../../context/auth/authContext'
 
 const style = {
     display: 'flex',
@@ -15,13 +15,33 @@ const style = {
 
 
 const Header = () => {
+    const {isAuthenticated, user} = useContext(authContext);
+    
+    const navItems = isAuthenticated
+        ?['about', 'contacts'] 
+        :['about', 'login', 'register', 'contacts'];
+
+    console.log(user)
+    const userElement = user
+        ? <h2>Hello {user.name}</h2>
+        :'';
+    
+
     return (
         <header style={style}>
             <Link to="/">
                 <img id="logo" src={logo} alt="logo"/>Contact Keeper
             </Link>
-            
-            <Navbar />
+            {userElement}
+            <nav style={{width:'250px'}}>
+                <ul>
+                    {navItems.map(link => (
+                        <li key={link}>
+                            <Link to={`/${link}`}>{link}</Link>
+                        </li>
+                    ))}
+                </ul>
+            </nav>
         </header>
     )
 }

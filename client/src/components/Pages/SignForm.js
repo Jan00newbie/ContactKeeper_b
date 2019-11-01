@@ -11,9 +11,9 @@ const SignForm = ({ submitHandler, inputsBean=[] }) => {
     const { isAuthenticated } = useContext(authContext)
     const history = useHistory();
 
-    const initialState = inputsBean.reduce((prev, curr)=>
+    const initialState = inputsBean.reduce((prev, curr) =>
         Object.assign(prev, {[curr]: ''})
-    ,{})
+    , {})
 
     const [input, setInput] = useState(initialState)
     
