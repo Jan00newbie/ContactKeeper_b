@@ -19,21 +19,21 @@ export default (state, change) => {
     
         case REGISTER_FAILED:
         case LOGIN_FAILED:
+        case GET_USER_FAILED:
             localStorage.removeItem('token')
             return {
                 ...state,
-                isAuthenticated: false
+                isAuthenticated: false,
+                user: null,
+                contacts: null
             }
         
         case GET_USER_SUCCESS:
             return {
                 ...state,
-                user:change.user
+                user:change.payload
             };
-            
-        case GET_USER_SUCCESS:
-            return state;
-
+        
         default:
             break;
     }

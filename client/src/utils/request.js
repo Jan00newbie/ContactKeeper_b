@@ -1,10 +1,5 @@
-const request = (url, body) => {
-    const formData = new FormData()
-    
-    
-    return fetch(url,
-        {
-            method,
-            body:
-        })
-}
+export default (url, requestMeta, callback) => 
+    fetch(url, requestMeta)
+    .then(res => res.json())
+    .then(callback)
+    .catch(err => console.log(err))

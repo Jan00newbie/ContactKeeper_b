@@ -1,7 +1,9 @@
 import React, {useReducer} from 'react';
-import AuthContext from "./authContext";
 
-import authReducer from './authReducer'
+import request from '../../utils/request';
+
+import AuthContext from "./authContext";
+import authReducer from './authReducer';
 
 import { LOGIN_SUCCESS, LOGIN_FAILED, GET_USER_FAILED, GET_USER_SUCCESS, REGISTER_SUCCESS, REGISTER_FAILED } from '../types'
 
@@ -13,58 +15,56 @@ const AuthState = props => {
     })
 
     const loginHandler = userLoginData => {
-        fetch('/auth', {
+        const header = {
             method:'POST',
             headers:{
                 "Content-Type":'application/json'
             },
             body: JSON.stringify(userLoginData)
-        })
-        .then(res => res.json())
-        .then(data => {
-            console.log(data);
+        }
+        
+        request('/auth', header, data => {
+            console.log('login:',data);
             const action = (data.token) 
                 ? { type: LOGIN_SUCCESS, payload: data.token }
                 : { type: LOGIN_FAILED };
             dispath(action);
         })
-        .catch(err => console.log(err))
     }
 
     const registerHandler = userLoginData => {
-        fetch('/user', {
+        const header = {
             method:'POST',
             headers:{
-                "Content-Type":'application/json'
+                "Content-Type":"application/json"
             },
             body: JSON.stringify(userLoginData)
-        })
-        .then(res => res.json())
-        .then(data => {
-            console.log(data);
-            
+        }
+
+        request('/user', header, data => {
+            console.log('register: ', data);
+
             const action = (data.token) 
                 ? { type: REGISTER_SUCCESS, payload: data.token }
                 : { type: REGISTER_FAILED };
             dispath(action);
         })
-        .catch(err => console.log(err))
     }
 
     const getUser = () => {
-        fetch('/user', {
+        const header = {
             headers:{
                 "Authorization": `Brearer ${localStorage.getItem('token')}`
             }
-        })
-        .then(res => res.json())
-        .then(data => {
+        }
+
+        request('/user', header, data => {
+            console.log('getUser:', data);
             const action = (data) 
-                ? { type: GET_USER_SUCCESS, payload: data.user }
+                ? { type: GET_USER_SUCCESS, payload: data }
                 : { type: GET_USER_FAILED };
             dispath(action);
         })
-        .catch(err => console.log(err))
     }
     return (
         <AuthContext.Provider value={{
