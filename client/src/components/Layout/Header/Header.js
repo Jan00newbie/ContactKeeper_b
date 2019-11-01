@@ -21,7 +21,6 @@ const Header = () => {
         ?['about', 'contacts'] 
         :['about', 'login', 'register', 'contacts'];
 
-    console.log(user)
     const userElement = user
         ? <h2>Hello {user.name}</h2>
         :'';

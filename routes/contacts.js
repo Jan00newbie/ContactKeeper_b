@@ -127,7 +127,6 @@ router.put('/:id', [
     validate
 ], async (req, res) => {
 
-    console.log(res.params)
     const update = {
         name: req.body.name,
         email: req.body.email,

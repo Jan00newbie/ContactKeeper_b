@@ -4,7 +4,9 @@ export const SET_CONTACT = 'SET_CONTACT';
 export const CLEAR_CONTACT = 'CLEAR_CONTACT';
 export const UPDATE_CONTACT = 'UPDATE_CONTACT';
 export const FILTER_CONTACT = 'FILTER_CONTACT';
-export const REMOVE_CONTACT = 'REMOVE_CONTACT';
+
+export const GET_CONTACTS = 'REMOVE_CONTACT';
+
 
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAILED = 'LOGIN_FAILED';
