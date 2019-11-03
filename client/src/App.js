@@ -8,7 +8,7 @@ import './App.css';
 
 import authContext from './context/auth/authContext'
 
-import Header from './components/Layout/Header/Header';
+import Header from './components/Layout/Header';
 
 import Home from './components/Pages/Home';
 import About from './components/Pages/About';

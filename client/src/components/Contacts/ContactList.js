@@ -7,13 +7,12 @@ const styles = {
     justifyContent: 'space-between'
 };
 
-const ContactList = ({contacts, filter}) =>
-    <div style={styles}>
-        {contacts.map(contact =>
-            <ContactItem 
-                key={contact.id}
-                contact={contact}/>    
-        )}
-    </div>
+const ContactList = ({items}) =>
+    {   console.log("xd",items);
+    
+        return (<div style={styles}>
+            {items.map(contact => <ContactItem key={contact.id} contact={contact} />)}
+        </div>);
+    }
 
 export default ContactList;

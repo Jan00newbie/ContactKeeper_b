@@ -1,8 +1,9 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import ContactContext from '../../context/contact/contactContext';
 
 import ContactForm from '../Contacts/ContactForm';
 import FlitringList from '../Contacts/FlitringList';
+import ContactList from '../Contacts/ContactList';
 
 const style = {
     display: 'grid',
@@ -11,13 +12,21 @@ const style = {
 }
 
 const Contacts = () => {
+    
+    const {contacts, addContact, getContacts} = useContext(ContactContext);
 
-    const {contacts, addContact} = useContext(ContactContext);
-
+    
+    useEffect(() => {
+        getContacts();
+    }, [])
+    console.log(contacts);
+    
     return (
         <div style={style}>
             <ContactForm submitHandler={addContact}/>
-            <FlitringList contacts={contacts}/>
+            <FlitringList data={contacts} placeholder="filter contacts">
+                <ContactList/>
+            </FlitringList>
         </div>
     )
 }

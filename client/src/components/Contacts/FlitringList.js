@@ -1,24 +1,27 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
+import TextInput from '../Layout/TextInput';
 
-import ContactList from '../Contacts/ContactList';
-import ContactFilter from '../../components/Contacts/ContactFilter'
+const FlitringList = ({data = [], children, placeholder}) => {
 
-const FlitringList = ({contacts}) => {
+    const [items, setItems] = useState([]);
+    
+    useEffect(() => {
+        setItems(data)
+    }, [data]);
 
-    const [filter, setFilter] = useState('');
-
-    const filtredContacts = contacts.filter(contact => contact.name.toLowerCase().includes(filter.toLowerCase()));
-
-    const filterHandler = filter => {
-        setFilter(filter)
+    const changeFilter = filter => {
+        const filtredItems = [...items].filter(item => item.name.toLowerCase().includes(filter.toLowerCase()))
+        setItems(filtredItems)
     }
+    
+    const listWithItems = React.cloneElement(children, { items })
 
     return (
         <div>
-            <ContactFilter filterItems={filterHandler}/>
-            <ContactList
-                filter={filter}
-                contacts={filtredContacts}/>
+            <TextInput 
+                onChange={changeFilter} 
+                placeholder={placeholder}/>
+            {listWithItems}
         </div>
     )
 }

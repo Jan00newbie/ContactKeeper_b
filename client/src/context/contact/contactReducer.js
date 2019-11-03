@@ -2,7 +2,7 @@ import {
     ADD_CONTACT,
     DELETE_CONTACT,
     UPDATE_CONTACT,
-    GET_CONTACTS
+    GET_CONTACTS_SUCCESS
 } from '../types';
 
 const reducer = (state, change) => {
@@ -28,11 +28,12 @@ const reducer = (state, change) => {
                         : contact)
             };
             
-        case GET_CONTACTS:
+        case GET_CONTACTS_SUCCESS:
             return {
                 ...state, 
                 contacts: change.payload
             };
+            
         default:
             break;
     }

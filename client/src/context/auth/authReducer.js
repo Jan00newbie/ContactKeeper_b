@@ -24,14 +24,14 @@ export default (state, change) => {
             return {
                 ...state,
                 isAuthenticated: false,
-                user: null,
-                contacts: null
+                user: null
             }
         
         case GET_USER_SUCCESS:
             return {
                 ...state,
-                user:change.payload
+                user:change.payload,
+                isAuthenticated: true
             };
         
         default:
