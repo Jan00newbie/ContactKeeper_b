@@ -8,11 +8,12 @@ const styles = {
 };
 
 const ContactList = ({items}) =>
-    {   console.log("xd",items);
-    
-        return (<div style={styles}>
-            {items.map(contact => <ContactItem key={contact.id} contact={contact} />)}
-        </div>);
-    }
+    (<div style={styles}>
+        {items.map(contact =>
+            <ContactItem 
+                key={contact.id}
+                contact={contact}/>    
+        )}
+    </div>)
 
 export default ContactList;

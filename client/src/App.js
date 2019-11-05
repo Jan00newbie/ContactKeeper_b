@@ -16,13 +16,11 @@ import Contacts from './components/Pages/Contacts';
 import SignForm from './components/Pages/SignForm';
 
 const App = () => {
-  const {isAuthenticated, getUser, user, login, register} = useContext(authContext)
+  const { getUser, login, register, isAuthenticated } = useContext(authContext)
   
   useEffect(() => {
-    if(isAuthenticated && !user){
-      getUser();
-    }
-  }, [isAuthenticated, user])
+    isAuthenticated && getUser();
+  }, [isAuthenticated])
 
   return (
       <Fragment>

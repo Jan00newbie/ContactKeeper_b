@@ -15,11 +15,9 @@ const Contacts = () => {
     
     const {contacts, addContact, getContacts} = useContext(ContactContext);
 
-    
     useEffect(() => {
         getContacts();
     }, [])
-    console.log(contacts);
     
     return (
         <div style={style}>

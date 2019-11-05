@@ -10,10 +10,17 @@ import { LOGIN_SUCCESS, LOGIN_FAILED, GET_USER_FAILED, GET_USER_SUCCESS, REGISTE
 
 const AuthState = props => {
 
-    const [state, dispath] = useReducer(authReducer, {
-        isAuthenticated: false
-    })
+    const initialState = {
+        isAuthenticated: !!localStorage.getItem('token'),
+        user: null,
+        error: null
+    }
 
+    const [state, dispath] = useReducer(authReducer, initialState)
+
+
+
+    
     const loginHandler = userLoginData => {
         const header = {
             method:'POST',
@@ -24,11 +31,11 @@ const AuthState = props => {
         }
         
         request('/auth', header, data => {
-            console.log('login:',data);
             const action = (data.token) 
                 ? { type: LOGIN_SUCCESS, payload: data.token }
                 : { type: LOGIN_FAILED };
             dispath(action);
+            getUser();
         })
     }
 
@@ -48,6 +55,7 @@ const AuthState = props => {
                 ? { type: REGISTER_SUCCESS, payload: data.token }
                 : { type: REGISTER_FAILED };
             dispath(action);
+            getUser();
         })
     }
 

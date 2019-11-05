@@ -13,8 +13,9 @@ const setAdditionalHeaders = init => {
         extendedInit.headers = {}
     }
 
-    if(localStorage.getItem('token')){
-        Object.assign(extendedInit.headers, {'Authorization': `Brearer ${localStorage.getItem('token')}`})
+    const authToken = localStorage.getItem('token')
+    if(authToken){
+        Object.assign(extendedInit.headers, {'Authorization': `Brearer ${authToken}`})
     }
     return extendedInit;
 }
