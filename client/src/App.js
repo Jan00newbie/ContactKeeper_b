@@ -19,6 +19,8 @@ const App = () => {
   const { getUser, login, register, isAuthenticated } = useContext(authContext)
   
   useEffect(() => {
+    console.log(isAuthenticated);
+    
     isAuthenticated && getUser();
   }, [isAuthenticated])
 

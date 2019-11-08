@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import { Link } from 'react-router-dom';
 import logo from '../../assets/logo.svg';
 
@@ -15,16 +15,27 @@ const style = {
 
 
 const Header = () => {
-    const {isAuthenticated, user} = useContext(authContext);
+    const {user} = useContext(authContext);
+
+    useEffect(()=>{
+    console.log(2);
+        
+        
+    },[user])
     
-    const navItems = isAuthenticated
+    
+    const navItems = user
         ?['about', 'contacts'] 
         :['about', 'login', 'register', 'contacts'];
 
     const userElement = user
         ? <h2>Hello {user.name}</h2>
         :'';
+
+        console.log(user);
     
+        
+
 
     return (
         <header style={style}>

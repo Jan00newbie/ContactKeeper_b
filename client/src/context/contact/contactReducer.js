@@ -2,7 +2,7 @@ import {
     ADD_CONTACT,
     DELETE_CONTACT,
     UPDATE_CONTACT,
-    GET_CONTACTS_SUCCESS
+    GET_CONTACTS_SUCCESS,
 } from '../types';
 
 const reducer = (state, change) => {

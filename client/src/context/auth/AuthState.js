@@ -35,7 +35,6 @@ const AuthState = props => {
                 ? { type: LOGIN_SUCCESS, payload: data.token }
                 : { type: LOGIN_FAILED };
             dispath(action);
-            getUser();
         })
     }
 
@@ -55,7 +54,6 @@ const AuthState = props => {
                 ? { type: REGISTER_SUCCESS, payload: data.token }
                 : { type: REGISTER_FAILED };
             dispath(action);
-            getUser();
         })
     }
 
@@ -68,9 +66,9 @@ const AuthState = props => {
 
         request('/user', header, data => {
             console.log('getUser:', data);
-            const action = (data) 
-                ? { type: GET_USER_SUCCESS, payload: data }
-                : { type: GET_USER_FAILED };
+            const action = data.err
+                ? { type: GET_USER_FAILED }
+                : { type: GET_USER_SUCCESS, payload: data }
             dispath(action);
         })
     }
