@@ -14,23 +14,22 @@ import Home from './components/Pages/Home';
 import About from './components/Pages/About';
 import Contacts from './components/Pages/Contacts';
 import SignForm from './components/Pages/SignForm';
+import { AlertsList } from './components/Layout/Alerts/Alerts';
 
 const App = () => {
-  const { getUser, login, register, isAuthenticated } = useContext(authContext)
+  const { loadUser, auth, isAuthenticated } = useContext(authContext)
   
   useEffect(() => {
-    console.log(isAuthenticated);
-    
-    isAuthenticated && getUser();
+    isAuthenticated && loadUser();
   }, [isAuthenticated])
 
   return (
       <Fragment>
 
         <Header />
-        
         {/* Content goes here */}
         <div className="container">
+          <AlertsList/>
           <Switch>
             <Route exact path='/'>
               <Home />
@@ -45,11 +44,11 @@ const App = () => {
             </Route>
 
             <Route exact path='/login'>
-              <SignForm submitHandler={login} inputsBean={['email', 'password']}/>
+              <SignForm submitHandler={auth} inputsBean={['email', 'password']}/>
             </Route>
 
             <Route exact path='/register'>
-              <SignForm submitHandler={register} inputsBean={['name' ,'email', 'password']}/>
+              <SignForm submitHandler={auth} inputsBean={['name' ,'email', 'password']}/>
             </Route>
           </Switch>
         </div>

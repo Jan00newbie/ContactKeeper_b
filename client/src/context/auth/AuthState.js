@@ -1,84 +1,71 @@
-import React, {useReducer} from 'react';
+import React, {useReducer, useContext} from 'react';
 
-import request from '../../utils/request';
+import createRequest from '../../utils/request';
 
-import AuthContext from "./authContext";
+import AlertContext from '../alert/alertContext';
+import AuthContext from './authContext';
 import authReducer from './authReducer';
 
-import { LOGIN_SUCCESS, LOGIN_FAILED, GET_USER_FAILED, GET_USER_SUCCESS, REGISTER_SUCCESS, REGISTER_FAILED } from '../types'
+import {
+    AUTH_SUCCESS,
+    LOAD_USER_SUCCESS,
+    LOGOUT
+} from '../types'
 
 
 const AuthState = props => {
-
+    const {setAlert} = useContext(AlertContext)
+    
+    
     const initialState = {
         isAuthenticated: !!localStorage.getItem('token'),
         user: null,
         error: null
     }
-
     const [state, dispath] = useReducer(authReducer, initialState)
-
-
-
     
-    const loginHandler = userLoginData => {
+    const authErrorHandler = error => {
+        setAlert(error)
+        dispath({type:LOGOUT})
+    }
+    const request = createRequest(authErrorHandler)
+
+    const authHandler = userLoginData => {
         const header = {
             method:'POST',
-            headers:{
-                "Content-Type":'application/json'
-            },
             body: JSON.stringify(userLoginData)
+        }
+
+        const callback = data => {
+            if (!data.token){
+                throw new Error('Problem with authentication! Please log again')
+            }
+            dispath({type: AUTH_SUCCESS, payload:data.token})
         }
         
-        request('/auth', header, data => {
-            const action = (data.token) 
-                ? { type: LOGIN_SUCCESS, payload: data.token }
-                : { type: LOGIN_FAILED };
-            dispath(action);
-        })
+        request('/auth', callback, header)
     }
 
-    const registerHandler = userLoginData => {
-        const header = {
-            method:'POST',
-            headers:{
-                "Content-Type":"application/json"
-            },
-            body: JSON.stringify(userLoginData)
-        }
-
-        request('/user', header, data => {
-            console.log('register: ', data);
-
-            const action = (data.token) 
-                ? { type: REGISTER_SUCCESS, payload: data.token }
-                : { type: REGISTER_FAILED };
-            dispath(action);
-        })
-    }
-
-    const getUser = () => {
+    const loadUserHandler = () => {
         const header = {
             headers:{
                 "Authorization": `Brearer ${localStorage.getItem('token')}`
             }
         }
 
-        request('/user', header, data => {
-            console.log('getUser:', data);
-            const action = data.err
-                ? { type: GET_USER_FAILED }
-                : { type: GET_USER_SUCCESS, payload: data }
-            dispath(action);
-        })
+        const callback = data => {
+            dispath({type: LOAD_USER_SUCCESS, payload:data})
+        }
+
+        request('/auth', callback, header);
     }
     return (
         <AuthContext.Provider value={{
-            login: loginHandler,
-            register: registerHandler,
-            getUser,
+            auth: authHandler,
+            loadUser: loadUserHandler,
             isAuthenticated: state.isAuthenticated,
             user:state.user,
+            request
         }} >
             {props.children}
         </AuthContext.Provider>

@@ -1,21 +1,25 @@
 import React, {
-    useReducer
+    useReducer,
+    useContext
 } from 'react';
-import ContactContext from './contactContext';
-import contactReducer from './contactReducer';
 
-import request from '../../utils/request';
+import ContactContext from './contactContext';
+import AuthContext from '../auth/authContext';
+
+import contactReducer from './contactReducer';
 
 import {
     ADD_CONTACT,
     DELETE_CONTACT,
     UPDATE_CONTACT,
-    GET_CONTACTS_SUCCESS,
-    GET_CONTACTS_FAILED
+    GET_CONTACTS_SUCCESS
 } from '../types';
 
 
 const ContactState = props => {
+
+    const {request} = useContext(AuthContext)
+
     const initialState = {
         contacts: [
         //    {
@@ -81,8 +85,8 @@ const ContactState = props => {
         // }
     ]
     };
-
     const [state, dispath] = useReducer(contactReducer, initialState);
+
     
     const addContactHandler = contact => {
         dispath({type: ADD_CONTACT, payload: contact});
@@ -97,12 +101,11 @@ const ContactState = props => {
     }
 
     const getContactsHandler = () => {
-        request('/contacts', {method: 'GET'}, data => {
-            const action = data.err
-                ? {type: GET_CONTACTS_FAILED, payload: data.err}
-                : {type: GET_CONTACTS_SUCCESS, payload: data}
-            dispath(action)
-        })
+        const callback = data => {
+            dispath({type: GET_CONTACTS_SUCCESS, payload: data})
+        }
+
+        request('/contacts', null, callback )
     }
 
     return (

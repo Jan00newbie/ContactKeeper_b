@@ -1,11 +1,12 @@
 import React, {useReducer} from 'react';
 
-import request from '../../utils/request';
-
 import AlertContext from "./alertContext";
 import alertReducer from './alertReducer';
 
-import {  } from '../types'
+import {
+    SET_ALERT,
+    REMOVE_ALERT
+} from '../types'
 
 
 const AlertState = props => {
@@ -14,16 +15,26 @@ const AlertState = props => {
 
     const [state, dispath] = useReducer(alertReducer, initialState)
     
-    const setAlertHandler = () => {
+    const setAlertHandler = (msg, type='danger') => {
+        const id = Math.random() * 1000
+        
+        const alert = {
+            id,
+            msg,
+            type
+        }
+
+        dispath({type: SET_ALERT, payload: alert});
+
         setTimeout(() => {
-            dispath({type: SET_ALERT})
+            dispath({type: REMOVE_ALERT, payload: id});
         }, 5000);
     }
     
     return (
         <AlertContext.Provider value={{
             setAlert: setAlertHandler,
-            contacts: state
+            alerts: state
         }} >
             {props.children}
         </AlertContext.Provider>

@@ -1,25 +1,26 @@
 import {
-    REGISTER_SUCCESS,
-    LOGIN_SUCCESS,
-    REGISTER_FAILED,
-    LOGIN_FAILED,
-    GET_USER_SUCCESS,
-    GET_USER_FAILED
+    AUTH_SUCCESS,
+    LOAD_USER_SUCCESS,
+    LOGOUT
 } from '../types';
 
 export default (state, change) => {
     switch (change.type) {
-        case LOGIN_SUCCESS:
-        case REGISTER_SUCCESS:   
+
+        case AUTH_SUCCESS:  
             localStorage.setItem('token', change.payload)
             return {
                 ...state,
                 isAuthenticated: true
             }
+
+        case LOAD_USER_SUCCESS:
+            return {
+                ...state,
+                user:change.payload
+            };
     
-        case REGISTER_FAILED:
-        case LOGIN_FAILED:
-        case GET_USER_FAILED:
+        case LOGOUT:
             localStorage.removeItem('token')
             return {
                 ...state,
@@ -27,13 +28,7 @@ export default (state, change) => {
                 user: null,
             }
         
-        case GET_USER_SUCCESS:
-            return {
-                ...state,
-                user:change.payload
-            };
-        
         default:
-            break;
+            throw new Error("Bad action!")
     }
 };

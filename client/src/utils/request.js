@@ -1,13 +1,12 @@
-export default (input, init, callback, errorHandler=console.log) => {
-    return fetch(input, setAdditionalHeaders(init))
+export default (errorHandler) => (input, callback, init={}) => 
+    fetch(input, setAdditionalHeaders(init))
     .then(res => res.json())
     .then(data => data.err
-        ? Promise.reject(data.err) //cut through to .catch case
+        ? Promise.reject(data.err) //cut-through to .catch case
         : data
     )
     .then(callback)
     .catch(errorHandler)
-}
 
 
 const setAdditionalHeaders = init => {

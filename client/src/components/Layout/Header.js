@@ -18,9 +18,7 @@ const Header = () => {
     const {user} = useContext(authContext);
 
     useEffect(()=>{
-    console.log(2);
-        
-        
+        console.log(2);
     },[user])
     
     
@@ -31,11 +29,6 @@ const Header = () => {
     const userElement = user
         ? <h2>Hello {user.name}</h2>
         :'';
-
-        console.log(user);
-    
-        
-
 
     return (
         <header style={style}>
