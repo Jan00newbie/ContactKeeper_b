@@ -25,6 +25,8 @@ const AuthState = props => {
     const [state, dispath] = useReducer(authReducer, initialState)
     
     const authErrorHandler = error => {
+        console.log(error);
+        
         setAlert(error)
         dispath({type:LOGOUT})
     }
@@ -37,6 +39,7 @@ const AuthState = props => {
         }
 
         const callback = data => {
+            console.log("data",data)
             if (!data.token){
                 throw new Error('Problem with authentication! Please log again')
             }
@@ -57,7 +60,7 @@ const AuthState = props => {
             dispath({type: LOAD_USER_SUCCESS, payload:data})
         }
 
-        request('/auth', callback, header);
+        request('/user', callback, header);
     }
     return (
         <AuthContext.Provider value={{

@@ -8,10 +8,11 @@ const style = {
 
 export const AlertsList = () => {
     const {alerts} = useContext(alertContext)
-    console.log(alerts)
+
     return (
         <div style={style}>
-            {alerts.map(({id, msg, type}) => <Alert key={id} msg={msg} type={type}/>)}
+            {alerts.map(({id, msg, type}) => 
+                <Alert key={id} msg={msg} type={type}/>)}
         </div>
     )
 }

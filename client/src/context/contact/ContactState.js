@@ -105,7 +105,7 @@ const ContactState = props => {
             dispath({type: GET_CONTACTS_SUCCESS, payload: data})
         }
 
-        request('/contacts', null, callback )
+        request('/contacts', callback, null)
     }
 
     return (
