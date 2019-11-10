@@ -17,6 +17,7 @@ import {
     CLEAR_CONTACT_STATE
 } from '../types';
 import request from '../../utils/request';
+import { cleanFalsyProps } from '../../utils/util';
 
 
 const ContactState = props => {
@@ -27,7 +28,6 @@ const ContactState = props => {
         contacts: []
     };
     const [state, dispath] = useReducer(contactReducer, initialState);
-
     
     const addContactHandler = contact => {
         dispath({type: ADD_CONTACT, payload: contact});
@@ -37,8 +37,20 @@ const ContactState = props => {
         dispath({type: DELETE_CONTACT, payload:contactId});
     }
 
-    const updateContactHandler = contact => {
-        dispath({type: UPDATE_CONTACT, payload: contact});
+    const updateContactHandler = (id, contact) => {
+        const sanitizedData = cleanFalsyProps({...contact});
+        console.log(sanitizedData);
+        
+        request(`/contacts/${id}`, {method: 'PUT', body:JSON.stringify(sanitizedData)})
+        .then(data => {
+            console.log(data);
+            
+            dispath({type: UPDATE_CONTACT, payload: data})
+        })
+        .catch(error=>{
+            dispath({type: CLEAR_CONTACT_STATE})
+            authError(error)
+        })
     }
 
     const getContactsHandler = () => {

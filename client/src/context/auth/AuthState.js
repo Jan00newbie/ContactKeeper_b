@@ -24,7 +24,6 @@ const AuthState = props => {
     const {setAlert} = useContext(alertContext)
 
     const authErrorHandler = error => {
-        console.log(error);
         
         setAlert(error)
         dispath({type: LOGOUT})
@@ -54,11 +53,10 @@ const AuthState = props => {
             }
         }
 
-        const callback = data => {
+        request('/user', header)
+        .then(data => {
             dispath({type: LOAD_USER_SUCCESS, payload:data})
-        }
-
-        request('/user', callback, header);
+        });
     }
     return (
         <authContext.Provider value={{

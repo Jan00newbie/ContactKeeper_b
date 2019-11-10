@@ -24,8 +24,7 @@ const ContactItem = ({contact:{id, name, email, phone}}) => {
     };
     
     const handleFormSubmit = contact =>{
-        contact.id = id
-        context.updateContact(contact);
+        context.updateContact(id, contact);
         setFormOpen(false);
     }
 
