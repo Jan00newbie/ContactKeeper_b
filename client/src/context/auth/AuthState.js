@@ -9,14 +9,11 @@ import authReducer from './authReducer';
 import {
     AUTH_SUCCESS,
     LOAD_USER_SUCCESS,
-    LOGOUT
+    FATAL_ERROR
 } from '../types'
 
 
 const AuthState = props => {
-    const {setAlert} = useContext(AlertContext)
-    
-    
     const initialState = {
         isAuthenticated: !!localStorage.getItem('token'),
         user: null,
@@ -25,10 +22,7 @@ const AuthState = props => {
     const [state, dispath] = useReducer(authReducer, initialState)
     
     const authErrorHandler = error => {
-        console.log(error);
-        
-        setAlert(error)
-        dispath({type:LOGOUT})
+        dispath({type: FATAL_ERROR, payload: error})
     }
     const request = createRequest(authErrorHandler)
 

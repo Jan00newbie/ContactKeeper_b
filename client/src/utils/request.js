@@ -1,4 +1,4 @@
-export default (errorHandler) => (input, callback, init = {}) =>
+export default (errorHandler=console.log()) => (input, callback, init = {}) =>
 fetch(input, setAdditionalHeaders(init))
     .then(res => res.json())
     .then(data => data.err 

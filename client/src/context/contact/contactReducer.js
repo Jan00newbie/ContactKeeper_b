@@ -3,6 +3,7 @@ import {
     DELETE_CONTACT,
     UPDATE_CONTACT,
     GET_CONTACTS_SUCCESS,
+    CLEAR_CONTACT_STATE
 } from '../types';
 
 const reducer = (state, change) => {
@@ -32,6 +33,12 @@ const reducer = (state, change) => {
             return {
                 ...state, 
                 contacts: change.payload
+            };
+
+        case CLEAR_CONTACT_STATE:
+            return {
+                ...state, 
+                contacts:[]
             };
             
         default:

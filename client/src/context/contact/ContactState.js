@@ -12,7 +12,8 @@ import {
     ADD_CONTACT,
     DELETE_CONTACT,
     UPDATE_CONTACT,
-    GET_CONTACTS_SUCCESS
+    GET_CONTACTS_SUCCESS,
+    CLEAR_CONTACT_STATE
 } from '../types';
 
 
@@ -21,69 +22,7 @@ const ContactState = props => {
     const {request} = useContext(AuthContext)
 
     const initialState = {
-        contacts: [
-        //    {
-        //     id: 1,
-        //     name: "Amy",
-        //     surname: "Banks",
-        //     email: "chris@katz.kz",
-        //     phone: "204-325-234"
-        // }, {
-        //     id: 2,
-        //     name: "Marilyn",
-        //     surname: "Carter",
-        //     email: "nathan@kinney.sa",
-        //     phone: "204-325-234"
-        // }, {
-        //     id: 3,
-        //     name: "Dennis",
-        //     surname: "Britt",
-        //     email: "brooke@carlton.pr",
-        //     phone: "204-325-234"
-        // }, {
-        //     id: 4,
-        //     name: "Gary",
-        //     surname: "Middleton",
-        //     email: "mary@berry.ne",
-        //     phone: "204-325-234"
-        // }, {
-        //     id: 5,
-        //     name: "Edgar",
-        //     surname: "Walton",
-        //     email: "roberta@pritchard.cu",
-        //     phone: "204-325-234"
-        // }, {
-        //     id: 6,
-        //     name: "Kathleen",
-        //     surname: "Hamrick",
-        //     email: "calvin@mccall.dz",
-        //     phone: "204-325-234"
-        // }, {
-        //     id: 7,
-        //     name: "Clifford",
-        //     surname: "Butler",
-        //     email: "milton@griffin.fr",
-        //     phone: "204-325-234"
-        // }, {
-        //     id: 8,
-        //     name: "Regina",
-        //     surname: "Bowden",
-        //     email: "wayne@hood.gg",
-        //     phone: "204-325-234"
-        // }, {
-        //     id: 9,
-        //     name: "Thomas",
-        //     surname: "Riddle",
-        //     email: "janice@wu.ky",
-        //     phone: "204-325-234"
-        // }, {
-        //     id: 10,
-        //     name: "Jeff",
-        //     surname: "Coleman",
-        //     email: "patrick@proctor.pe",
-        //     phone: "204-325-234"
-        // }
-    ]
+        contacts: []
     };
     const [state, dispath] = useReducer(contactReducer, initialState);
 
@@ -105,7 +44,11 @@ const ContactState = props => {
             dispath({type: GET_CONTACTS_SUCCESS, payload: data})
         }
 
-        request('/contacts', callback, null)
+        request('/contacts', callback)
+    }
+
+    const clearStateHandler = () => {
+        dispath({type:CLEAR_CONTACT_STATE})
     }
 
     return (
@@ -115,7 +58,8 @@ const ContactState = props => {
                 addContact: addContactHandler,
                 deleteContact: deleteContactHandler,
                 updateContact: updateContactHandler,
-                getContacts: getContactsHandler
+                getContacts: getContactsHandler,
+                clearState: clearStateHandler
             }}>
             {props.children}
         </ContactContext.Provider>
