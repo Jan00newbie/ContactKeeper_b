@@ -11,6 +11,8 @@ const User = require('../Models/User')
 
 const router = express.Router()
 
+const sanitizeContact = ({name, _id:id, email, phone}) => ({name, id, email, phone})
+
 /**
  * @route GET /api/contacts
  * @desc Get all contacts
@@ -29,14 +31,8 @@ router.get('/', auth, async (req, res) => {
             err: "No data found."
         })
     }
-    const contactResult = contacts.map(({name, _id, email, phone}) => (
-        {
-            name,
-            id: _id,
-            email,
-            phone
-        }
-        ))
+    const contactResult = contacts.map(sanitizeContact)
+    
     res.status(200).send(contactResult)
 })
 
@@ -60,9 +56,7 @@ router.get('/:id', auth, async (req, res) => {
             })
         }
 
-        const { name, _id, email, phone } = contact
-    
-        const contactResult = { name, _id, email, phone }
+        const contactResult = sanitizeContact(contact)
 
         res.status(200).send(contactResult)
 
@@ -142,7 +136,9 @@ router.put('/:id', [
             upsert: true
         })
 
-        return res.status(200).send(updatedContact)
+        const contactResult = sanitizeContact(updatedContact)
+
+        return res.status(200).send(contactResult)
 
     } catch {
         return res.status(404).send({
