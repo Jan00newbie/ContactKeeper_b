@@ -1,12 +1,10 @@
-export default (errorHandler=console.log()) => (input, callback, init = {}) =>
+export default (input, init = {}) =>
 fetch(input, setAdditionalHeaders(init))
     .then(res => res.json())
     .then(data => data.err 
         ?Promise.reject(data.err) //cut-through to .catch case
         :data
     )
-    .then(callback)
-    .catch(errorHandler);
 
 
 

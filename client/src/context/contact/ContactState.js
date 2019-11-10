@@ -3,8 +3,9 @@ import React, {
     useContext
 } from 'react';
 
-import ContactContext from './contactContext';
-import AuthContext from '../auth/authContext';
+import contactContext from './contactContext';
+import authContext from '../auth/authContext';
+
 
 import contactReducer from './contactReducer';
 
@@ -15,11 +16,12 @@ import {
     GET_CONTACTS_SUCCESS,
     CLEAR_CONTACT_STATE
 } from '../types';
+import request from '../../utils/request';
 
 
 const ContactState = props => {
 
-    const {request} = useContext(AuthContext)
+    const {authError} = useContext(authContext)
 
     const initialState = {
         contacts: []
@@ -40,11 +42,15 @@ const ContactState = props => {
     }
 
     const getContactsHandler = () => {
-        const callback = data => {
-            dispath({type: GET_CONTACTS_SUCCESS, payload: data})
-        }
 
-        request('/contacts', callback)
+        request('/contacts')
+        .then(data => {
+            dispath({type: GET_CONTACTS_SUCCESS, payload: data})
+        })
+        .catch(error=>{
+            dispath({type: CLEAR_CONTACT_STATE})
+            authError(error)
+        })
     }
 
     const clearStateHandler = () => {
@@ -52,7 +58,7 @@ const ContactState = props => {
     }
 
     return (
-        <ContactContext.Provider
+        <contactContext.Provider
             value = {{
                 contacts: state.contacts,
                 addContact: addContactHandler,
@@ -62,7 +68,7 @@ const ContactState = props => {
                 clearState: clearStateHandler
             }}>
             {props.children}
-        </ContactContext.Provider>
+        </contactContext.Provider>
     );
 }
 
