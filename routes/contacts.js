@@ -58,7 +58,7 @@ router.get('/:id', auth, async (req, res) => {
 
         const contactResult = sanitizeContact(contact)
 
-        res.status(200).send(contactResult)
+        return res.status(200).send(contactResult)
 
     } catch (error) {
         return res.status(404).send({
@@ -99,10 +99,11 @@ router.post('/', [
     })
 
     try {
-        const result = await contact.save()
-        return res.status(200).json(result)
+        const contactDocument = await contact.save()
+        const resultContact = sanitizeContact(contactDocument)
+        res.status(200).send(resultContact)
     } catch (err) {
-        return res.status(404).send({
+        res.status(404).send({
             err: 'Write error.'
         })
     }
