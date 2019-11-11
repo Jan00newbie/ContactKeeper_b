@@ -12,10 +12,8 @@ const styles = {
 
 const ContactItem = ({contact}) => {
     const context = useContext(contactContext)
-    console.log(contact);
-    
-    const {id} = contact
 
+    const {id} = contact
     
     const [formOpen, setFormOpen] = useState(false);
 
@@ -28,7 +26,6 @@ const ContactItem = ({contact}) => {
     };
     
     const handleFormSubmit = contactFormData =>{
-
         context.updateContact({id, ...contactFormData});
         setFormOpen(false);
     }
