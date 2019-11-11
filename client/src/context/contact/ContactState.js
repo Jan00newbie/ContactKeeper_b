@@ -33,14 +33,21 @@ const ContactState = props => {
         dispath({type: ADD_CONTACT, payload: contact});
     }
 
-    const deleteContactHandler = contactId => {
-        dispath({type: DELETE_CONTACT, payload:contactId});
+    const deleteContactHandler = id => {
+        console.log(id);
+        request(`/contacts/${id}`, {method: 'DELETE'})
+        .then(() => {
+            dispath({type: DELETE_CONTACT, payload: id});
+        })
+        .catch(error => {
+            dispath({type: CLEAR_CONTACT_STATE});
+            authError(error);
+        })
     }
 
-    const updateContactHandler = (id, contact) => {
-        const sanitizedData = cleanFalsyProps({...contact});
-        console.log(sanitizedData);
-        
+    const updateContactHandler = ({id, ...contactData}) => {
+        const sanitizedData = cleanFalsyProps(contactData);
+        console.log(id, sanitizedData);
         request(`/contacts/${id}`, {method: 'PUT', body:JSON.stringify(sanitizedData)})
         .then(data => {
             console.log(data);

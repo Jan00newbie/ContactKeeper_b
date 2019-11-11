@@ -10,12 +10,16 @@ const styles = {
     borderRadius: "10px"
 }
 
-const ContactItem = ({contact:{id, name, email, phone}}) => {
+const ContactItem = ({contact}) => {
     const context = useContext(contactContext)
+    console.log(contact);
+    
+    const {id} = contact
 
+    
     const [formOpen, setFormOpen] = useState(false);
 
-    const handleDelete = id => {
+    const handleDelete = () => {
         context.deleteContact(id)
     };
 
@@ -23,8 +27,9 @@ const ContactItem = ({contact:{id, name, email, phone}}) => {
         setFormOpen(true);
     };
     
-    const handleFormSubmit = contact =>{
-        context.updateContact(id, contact);
+    const handleFormSubmit = contactFormData =>{
+
+        context.updateContact({id, ...contactFormData});
         setFormOpen(false);
     }
 
@@ -32,17 +37,11 @@ const ContactItem = ({contact:{id, name, email, phone}}) => {
         <div style={styles}>
             {formOpen 
                 ? <ContactForm
-                    id={id}
-                    name={name}
-                    email={email}
-                    phone={phone}
+                    {...contact}
                     submitHandler={handleFormSubmit}
                     />
                 : <Contact
-                    id={id}
-                    name={name}
-                    email={email}
-                    phone={phone}
+                    {...contact}
                     deleteHandler={handleDelete}
                     updateHandler={handleUpdate}/>}
         </div>

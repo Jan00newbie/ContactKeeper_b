@@ -152,10 +152,10 @@ router.put('/:id', [
  * @desc Update contact
  * @access private
  */
-router.delete('/', auth, async (req, res) => {
+router.delete('/:id', auth, async (req, res) => {
 
     const result = await Contact.findOneAndRemove({
-        _id: req.body.id,
+        _id: req.params.id,
         user: req.userId
     })
 
