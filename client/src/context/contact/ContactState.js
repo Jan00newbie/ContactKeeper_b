@@ -7,7 +7,6 @@ import contactContext from './contactContext';
 import authContext from '../auth/authContext';
 import alertContext from '../alert/alertContext';
 
-
 import contactReducer from './contactReducer';
 
 import {
@@ -17,6 +16,13 @@ import {
     GET_CONTACTS_SUCCESS,
     CLEAR_CONTACT_STATE
 } from '../types';
+
+import {
+    ERROR,
+    WARNING,
+    NOTICE
+} from '../../context/alert/alertTypes';
+
 import request from '../../utils/request';
 import { cleanFalsyProps } from '../../utils/util';
 
@@ -33,11 +39,11 @@ const ContactState = props => {
     const handleRequestError = exception => {
 
         if(exception.warnings){
-            setAlert(exception.warnings, exception.type);
+            setAlert(exception.warnings, WARNING);
         } else if (exception.errors){
             dispath({type: CLEAR_CONTACT_STATE});
             logout();
-            setAlert(exception.errors, exception.type);
+            setAlert(exception.errors, ERROR);
         } else {
             throw new Error(`Unsupported error type ${exception.type}`);
         }
@@ -57,7 +63,7 @@ const ContactState = props => {
 
         request(`/contacts/${id}`, {method: 'DELETE'})
         .then(data => {
-            setAlert(data.msg, 'NOTICE');
+            setAlert(data.msg, NOTICE);
             dispath({type: DELETE_CONTACT, payload: id});
         })
         .catch(handleRequestError)

@@ -48,7 +48,7 @@ form > input{
     border-radius: 1em;
     cursor: pointer;
     background-color: white;
-    margin: 0.5em;
+    margin: 0.5em 0;
 }
 
 .btn-pos {
@@ -73,6 +73,25 @@ input[type="text"]{
     padding: .7em 0 .3em 0;
     color: grey;
 }
+
+.alert{
+    width: 400px;
+    height: 50px;
+}
+
+.alert__box--ERROR{
+    color: #F44336;
+}
+
+.alert__box--NOTICE{
+    color: #009688;
+}
+
+.alert__box--WARNING{
+    color: #FFC107;
+}
+
+
 @media screen and (min-width: 40rem){
     .container{
         width: 35rem;

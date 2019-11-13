@@ -7,6 +7,7 @@ import {
     SET_ALERT,
     REMOVE_ALERT
 } from '../types'
+import { ERROR, WARNING, NOTICE } from './alertTypes';
 
 
 const AlertState = props => {
@@ -15,7 +16,7 @@ const AlertState = props => {
 
     const [state, dispath] = useReducer(alertReducer, initialState);
     
-    const setAlertHandler = (messages, type='danger') => {
+    const setAlertHandler = (messages, type = NOTICE) => {
         const id = Math.floor(Math.random() * 1000)
         
         const alert = {

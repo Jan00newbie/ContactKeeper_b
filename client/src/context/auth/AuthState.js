@@ -21,7 +21,7 @@ const AuthState = props => {
     }
     const [state, dispath] = useReducer(authReducer, initialState)
     
-    const {setAlert} = useContext(alertContext)
+    const { setAlert } = useContext(alertContext)
 
     const handleRequestError = ({payload, type}) => {
         setAlert(payload, type)
