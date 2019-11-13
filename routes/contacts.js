@@ -88,8 +88,6 @@ router.post('/', [
             errors: ['User id in token is not apropierate.']
         })
     }
-    console.log("XD");
-    
 
     const { name, email, phone } = req.body
 
@@ -103,7 +101,7 @@ router.post('/', [
     try {
         const contactDocument = await contact.save()
         const resultContact = sanitizeContact(contactDocument)
-        console.log(resultContact)
+ 
         res.status(200).send(resultContact)
     } catch (err) {
         res.status(404).send({

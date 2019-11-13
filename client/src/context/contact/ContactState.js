@@ -48,7 +48,6 @@ const ContactState = props => {
 
         request('/contacts', {method: 'POST', body: JSON.stringify(sanitizedData)})
         .then(data => {
-            console.log(data);
             dispath({type: ADD_CONTACT, payload: data});
         })
         .catch(handleRequestError)

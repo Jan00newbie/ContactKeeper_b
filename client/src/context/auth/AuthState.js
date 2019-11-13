@@ -33,7 +33,6 @@ const AuthState = props => {
     }
 
     const authHandler = userLoginData => {
-        console.log(userLoginData);
         
         const header = {
             method:'POST',
@@ -60,8 +59,6 @@ const AuthState = props => {
 
         request('/user', header)
         .then(data => {
-            console.log(data);
-            
             dispath({type: LOAD_USER_SUCCESS, payload:data})
         })
         .catch(handleRequestError);
