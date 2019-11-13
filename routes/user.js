@@ -29,7 +29,6 @@ router.get('/', auth, async (req, res) => {
             })
         }
 
-
         return res.status(200).send({
             name: userData.name,
             email: userData.email
@@ -62,7 +61,7 @@ router.post('/',
             const foundUser = await User.findOne({ email })
             if (foundUser) {
                 return res.status(400).send({
-                    err: 'User already exist!'
+                    warnings: ['User already exist!']
                 })
             }
 

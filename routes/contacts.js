@@ -28,7 +28,7 @@ router.get('/', auth, async (req, res) => {
 
     if (!contacts) {
         res.status(404).send({
-            err: "No data found."
+            warnings: ["No data found."]
         })
     }
     const contactResult = contacts.map(sanitizeContact)
@@ -52,7 +52,7 @@ router.get('/:id', auth, async (req, res) => {
         
         if (!contact) {
             return res.status(404).send({
-                err: "No data found."
+                warnings: ["No data found."]
             })
         }
 
@@ -62,7 +62,7 @@ router.get('/:id', auth, async (req, res) => {
 
     } catch (error) {
         return res.status(404).send({
-            err: "No data found."
+            warnings: ["No data found."]
         })
     }
 })
@@ -85,9 +85,11 @@ router.post('/', [
 
     if (!foundUser) {
         return res.status(404).send({
-            err: 'User id in token is not apropierate.'
+            errors: ['User id in token is not apropierate.']
         })
     }
+    console.log("XD");
+    
 
     const { name, email, phone } = req.body
 
@@ -101,10 +103,11 @@ router.post('/', [
     try {
         const contactDocument = await contact.save()
         const resultContact = sanitizeContact(contactDocument)
+        console.log(resultContact)
         res.status(200).send(resultContact)
     } catch (err) {
         res.status(404).send({
-            err: 'Write error.'
+            warnings: ['Write error.']
         })
     }
 })
@@ -143,7 +146,7 @@ router.put('/:id', [
 
     } catch {
         return res.status(404).send({
-            err: "Contact not found"
+            errors: ["Contact not found"]
         })
     }
 })
@@ -162,7 +165,7 @@ router.delete('/:id', auth, async (req, res) => {
 
     if (!result) {
         res.status(404).send({
-            err: "Contact not found."
+            errors: ["Contact not found."]
         })
     }
 

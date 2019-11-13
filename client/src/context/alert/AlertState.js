@@ -11,16 +11,16 @@ import {
 
 const AlertState = props => {
 
-    const initialState = []
+    const initialState = [];
 
-    const [state, dispath] = useReducer(alertReducer, initialState)
+    const [state, dispath] = useReducer(alertReducer, initialState);
     
-    const setAlertHandler = (msg, type='danger') => {
+    const setAlertHandler = (messages, type='danger') => {
         const id = Math.floor(Math.random() * 1000)
         
         const alert = {
             id,
-            msg,
+            messages,
             type
         }
 

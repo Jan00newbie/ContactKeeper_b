@@ -3,7 +3,6 @@ const config = require('./default.json')
 
 const dbConnectKey = config.mongoURL
 
-
 const connectDB = async () => {
     try {
         await mongoose.connect(dbConnectKey, {

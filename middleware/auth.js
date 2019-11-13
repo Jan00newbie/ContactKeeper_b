@@ -9,10 +9,10 @@ module.exports = (req, res, next) =>{
             const data = jwt.verify(authToken, secret)
             req.userId = data.id
         } catch(err) {
-            return res.status(401).send({err: 'Your authorization is incorrect or your access expired! Please login again!'})
+            return res.status(401).send({errors: ['Your authorization is incorrect or your access expired! Please login again!']})
         }
     } else {
-        return res.status(401).send({err: 'Please login first!'})
+        return res.status(401).send({errors: ['Please login first!']})
     }
     next()
 }

@@ -1,12 +1,12 @@
 export default (input, init = {}) =>
-fetch(input, setAdditionalHeaders(init))
-    .then(res => res.json())
-    .then(data => data.err 
-        ?Promise.reject(data.err) //cut-through to .catch case
-        :data
-    )
-
-
+    fetch(input, setAdditionalHeaders(init))
+        .then(res => res.json())
+        .then(data => {
+            if(data.errors || data.warnings) {
+                throw data
+            }
+            return data
+        })
 
 const setAdditionalHeaders = init => {
     const extendedInit = {

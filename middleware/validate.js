@@ -1,10 +1,11 @@
 const { validationResult } = require('express-validator')
 
 module.exports = (req, res, next) => {
-    const errors = validationResult(req)
+    const warnings = validationResult(req)
     
-    if(!errors.isEmpty()){
-        return res.status(400).send(errors.array())
+    if(!warnings.isEmpty()){
+        const sanitizedWarnings = warnings.array().map(el => el.msg)
+        return res.status(400).send({warnings: sanitizedWarnings})
     }
     next()
 }

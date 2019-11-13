@@ -31,12 +31,12 @@ router.post('/',[
     const wrongDataEnteredMessage = 'The password or email that have been entered is incorrect.'
 
     if(!foundUser){
-        return res.status(401).send({err: wrongDataEnteredMessage})
+        return res.status(401).send({errors: [wrongDataEnteredMessage]})
     }
     const isCorrectPassword = await bcrypt.compare(password, foundUser.password);
     
     if(!isCorrectPassword){
-        return res.status(400).send({err: wrongDataEnteredMessage})
+        return res.status(400).send({errors: [wrongDataEnteredMessage]})
     }
 
     const token = jwt.sign({id: foundUser._id}, secret, {

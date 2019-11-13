@@ -11,8 +11,8 @@ export const AlertsList = () => {
 
     return (
         <div style={style}>
-            {alerts.map(({id, msg, type}) => 
-                <Alert key={id} msg={msg} type={type}/>)}
+            {alerts.map(({id, ...data}) => 
+                <Alert key={id} {...data}/>)}
         </div>
     )
 }

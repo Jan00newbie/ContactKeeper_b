@@ -23,13 +23,18 @@ const AuthState = props => {
     
     const {setAlert} = useContext(alertContext)
 
-    const authErrorHandler = error => {
-        
-        setAlert(error)
+    const handleRequestError = ({payload, type}) => {
+        setAlert(payload, type)
+        logoutHandler()
+    }
+
+    const logoutHandler = () => {
         dispath({type: LOGOUT})
     }
 
     const authHandler = userLoginData => {
+        console.log(userLoginData);
+        
         const header = {
             method:'POST',
             body: JSON.stringify(userLoginData)
@@ -37,13 +42,13 @@ const AuthState = props => {
         
         request('/auth', header)
         .then(data => {
-            //console.log("data",data)
+            
             if (!data.token){
                 throw new Error('Problem with authentication! Please log again')
             }
             dispath({type: AUTH_SUCCESS, payload:data.token})
         })
-        .catch(authErrorHandler)
+        .catch(handleRequestError);
     }
 
     const loadUserHandler = () => {
@@ -51,12 +56,15 @@ const AuthState = props => {
             headers:{
                 "Authorization": `Brearer ${localStorage.getItem('token')}`
             }
-        }
+        };
 
         request('/user', header)
         .then(data => {
+            console.log(data);
+            
             dispath({type: LOAD_USER_SUCCESS, payload:data})
-        });
+        })
+        .catch(handleRequestError);
     }
     return (
         <authContext.Provider value={{
@@ -64,7 +72,7 @@ const AuthState = props => {
             loadUser: loadUserHandler,
             isAuthenticated: state.isAuthenticated,
             user:state.user,
-            authError: authErrorHandler
+            logout: logoutHandler
         }} >
             {props.children}
         </authContext.Provider>
