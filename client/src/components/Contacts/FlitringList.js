@@ -10,7 +10,7 @@ const FlitringList = ({data = [], children, placeholder}) => {
     }, [data]);
 
     const changeFilter = filter => {
-        const filtredItems = [...items].filter(item => item.name.toLowerCase().includes(filter.toLowerCase()))
+        const filtredItems = [...data].filter(item => item.name.toLowerCase().includes(filter.toLowerCase()))
         setItems(filtredItems)
     }
     
